@@ -1,0 +1,5 @@
+In computing, just-in-time (JIT) compilation, also known as dynamic translation, is compilation done during execution
+of a program – at run time – rather than prior to execution.[1] Most often this consists of translation to machine code,
+which is then executed directly, but can also refer to translation to another format. A system implementing a JIT
+compiler typically continuously analyses the code being executed and identifies parts of the code where the speedup
+gained from compilation would outweigh the overhead of compiling that code.

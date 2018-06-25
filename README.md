@@ -1,1 +1,1 @@
-# java-se-labs
+# Java SE Labs

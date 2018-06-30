@@ -2,19 +2,21 @@ package org.art.java_core.design.patterns.adapter;
 
 /**
  * Adapter pattern (from GoF) - simple code example.
- * Simple vector-raster graphic adapter implementation.
+ * Simple vector-raster graphic adapter implementation:
+ * - adapter model based on inheritance;
+ * - adapter model based on composition.
  */
 public class Adapter {
 
     public static void main(String[] args) {
 
         //1 using composition
-        VectorGraphicsIF vectorGraphic2 = new VectorAdapterFromRaster2(new RasterGraphics());
+        VectorGraphicsIF vectorGraphic2 = new RasterToVectorComposAdapter(new RasterGraphics());
         vectorGraphic2.drawVectorLine();
         vectorGraphic2.drawVectorSquare();
 
         //2 using inheritance
-        VectorGraphicsIF vectorGraphic1 = new VectorAdapterFromRaster();
+        VectorGraphicsIF vectorGraphic1 = new RasterToVectorInheritAdapter();
         vectorGraphic1.drawVectorLine();
         vectorGraphic1.drawVectorSquare();
     }
@@ -23,21 +25,32 @@ public class Adapter {
 interface VectorGraphicsIF {
 
     void drawVectorLine();
+
     void drawVectorSquare();
 }
 
-class RasterGraphics {
+interface RasterGraphicsIF {
 
-    void drawRasterLine() {
+    void drawRasterLine();
+
+    void drawRasterSquare();
+}
+
+class RasterGraphics implements RasterGraphicsIF {
+
+    @Override
+    public void drawRasterLine() {
         System.out.println("Draw raster line...");
     }
 
-    void drawRasterSquare() {
+    @Override
+    public void drawRasterSquare() {
         System.out.println("Draw raster square...");
     }
 }
 
-class VectorAdapterFromRaster extends RasterGraphics implements VectorGraphicsIF {
+//Adapter model based on inheritance
+class RasterToVectorInheritAdapter extends RasterGraphics implements VectorGraphicsIF {
 
     @Override
     public void drawVectorLine() {
@@ -50,11 +63,12 @@ class VectorAdapterFromRaster extends RasterGraphics implements VectorGraphicsIF
     }
 }
 
-class VectorAdapterFromRaster2 implements VectorGraphicsIF {
+//Adapter model based on composition
+class RasterToVectorComposAdapter implements VectorGraphicsIF {
 
     private RasterGraphics rg;
 
-    public VectorAdapterFromRaster2(RasterGraphics raster) {
+    public RasterToVectorComposAdapter(RasterGraphics raster) {
         this.rg = raster;
     }
 

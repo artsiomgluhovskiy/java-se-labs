@@ -1,4 +1,4 @@
-#Java SE Labs
+<h2>Java SE Labs</h2>
 
 The repository of code examples for Java standard APIs and libraries, design patterns and principles, algorithms and data structures.
 

@@ -5,13 +5,15 @@ import java.util.List;
 
 /**
  * Observer pattern (from GoF) - simple code example.
+ * Weather station simulation.
  */
 public class Observer {
 
     public static void main(String[] args) {
 
-        MeteoStation station = new MeteoStation();
-        station.addObserver(new ConsoleObserver());
+        WeatherStation station = new WeatherStation();
+        station.addObserver(new ConsoleObserver("Observer 1"));
+        station.addObserver(new ConsoleObserver("Observer 2"));
         station.setMeasurements(25, 760);
     }
 }
@@ -25,7 +27,7 @@ interface ObservableIF {
     void notifyObservers();
 }
 
-class MeteoStation implements ObservableIF {
+class WeatherStation implements ObservableIF {
 
     private int temperature;
     private int pressure;
@@ -56,13 +58,23 @@ class MeteoStation implements ObservableIF {
 
 interface ObserverIF {
 
-    void handleEvent(int temp, int presser);
+    void handleEvent(int temp, int pressure);
 }
 
 class ConsoleObserver implements ObserverIF {
 
+    private String identifier;
+
+    public ConsoleObserver(String identifier) {
+        this.identifier = identifier;
+    }
+
     @Override
-    public void handleEvent(int temp, int presser) {
-        System.out.println("The weather changed. Temperature: " + temp + ", pressure: " + presser);
+    public void handleEvent(int temp, int pressure) {
+        System.out.printf("Notified: %s. The weather changed. Temperature: %s, pressure: %s.%n", this.identifier, temp, pressure);
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 }

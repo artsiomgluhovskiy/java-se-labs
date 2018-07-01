@@ -15,6 +15,7 @@ public class AbstractFactoryWiki {
 }
 
 class Client {
+
     private AbstractProductA productA;
     private AbstractProductB productB;
 

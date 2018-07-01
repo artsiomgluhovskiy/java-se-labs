@@ -1,7 +1,12 @@
 package org.art.java_core.design.patterns.abstract_factory.abstract_factory_1;
 
+/**
+ * Abstract Factory pattern (from GoF) - code example.
+ */
 public class AbstractFactory {
+
     public static void main(String[] args) {
+
         DeviceFactory factory = getFactoryByCountry("RU");
         Mouse m = factory.getMouse();
         Keyboard k = factory.getKeyboard();
@@ -27,6 +32,7 @@ public class AbstractFactory {
 }
 
 interface Mouse {
+
     void click();
 
     void dbclick();
@@ -35,16 +41,19 @@ interface Mouse {
 }
 
 interface Keyboard {
+
     void print();
 
     void println();
 }
 
 interface Touchpad {
+
     void track(int deltaX, int deltaY);
 }
 
 interface DeviceFactory {
+
     Mouse getMouse();
 
     Keyboard getKeyboard();
@@ -53,6 +62,7 @@ interface DeviceFactory {
 }
 
 class RuMouse implements Mouse {
+
     public void click() {
         System.out.println("Mouse click");
     }
@@ -73,6 +83,7 @@ class RuMouse implements Mouse {
 }
 
 class RuKeyboard implements Keyboard {
+
     public void print() {
         System.out.println("Print line");
     }
@@ -83,6 +94,7 @@ class RuKeyboard implements Keyboard {
 }
 
 class RuTouchpad implements Touchpad {
+
     public void track(int deltaX, int deltaY) {
         int s = (int) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
         System.out.println("Move on " + s + " px");
@@ -90,6 +102,7 @@ class RuTouchpad implements Touchpad {
 }
 
 class EnMouse implements Mouse {
+
     public void click() {
         System.out.println("EnMouse click");
     }
@@ -110,6 +123,7 @@ class EnMouse implements Mouse {
 }
 
 class EnKeyboard implements Keyboard {
+
     public void print() {
         System.out.println("EnPrint line");
     }
@@ -120,6 +134,7 @@ class EnKeyboard implements Keyboard {
 }
 
 class EnTouchpad implements Touchpad {
+
     public void track(int deltaX, int deltaY) {
         int s = (int) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
         System.out.println("EnMove on " + s + " px");
@@ -127,6 +142,7 @@ class EnTouchpad implements Touchpad {
 }
 
 class EnDeviceFactory implements DeviceFactory {
+
     public Mouse getMouse() {
         return new EnMouse();
     }
@@ -141,6 +157,7 @@ class EnDeviceFactory implements DeviceFactory {
 }
 
 class RuDeviceFactory implements DeviceFactory {
+
     public Mouse getMouse() {
         return new RuMouse();
     }

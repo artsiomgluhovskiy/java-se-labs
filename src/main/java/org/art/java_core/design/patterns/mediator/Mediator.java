@@ -2,6 +2,7 @@ package org.art.java_core.design.patterns.mediator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Mediator pattern (from GoF) - code example.
@@ -46,12 +47,28 @@ class ChatAdmin implements IChatActor {
 
     @Override
     public void sendMessage(String message) {
+        System.out.printf("%s sends the message: %s%n", identifier, message);
         chat.sendMessage(message, this);
     }
 
     @Override
     public void getMessage(String message) {
         System.out.println(this.identifier + " gets the message: " + message);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChatAdmin)) return false;
+
+        ChatAdmin chatAdmin = (ChatAdmin) o;
+
+        return identifier != null ? identifier.equals(chatAdmin.identifier) : chatAdmin.identifier == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return identifier != null ? identifier.hashCode() : 0;
     }
 }
 
@@ -68,12 +85,28 @@ class ChatUser implements IChatActor {
 
     @Override
     public void sendMessage(String message) {
+        System.out.printf("%s sends the message: %s%n", identifier, message);
         chat.sendMessage(message, this);
     }
 
     @Override
     public void getMessage(String message) {
         System.out.println(this.identifier + " gets the message: " + message);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChatUser)) return false;
+
+        ChatUser chatUser = (ChatUser) o;
+
+        return identifier != null ? identifier.equals(chatUser.identifier) : chatUser.identifier == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return identifier != null ? identifier.hashCode() : 0;
     }
 }
 
@@ -98,9 +131,14 @@ class TextChat implements IChat {
 
     @Override
     public void sendMessage(String message, IChatActor user) {
+        Objects.requireNonNull(user);
         for (IChatActor u : users) {
-            u.getMessage(message);
+            if (!user.equals(u)){
+                u.getMessage(message);
+            }
         }
-        admin.getMessage(message);
+        if (admin != null && !admin.equals(user)) {
+            admin.getMessage(message);
+        }
     }
 }

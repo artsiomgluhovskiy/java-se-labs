@@ -2,6 +2,7 @@ package org.art.java_core.design.patterns.template_method;
 
 /**
  * Template method (from GoF) - simple code example.
+ *
  */
 public class TemplateMethod {
 

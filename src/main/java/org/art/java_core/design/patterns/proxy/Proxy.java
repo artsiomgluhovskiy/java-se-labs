@@ -1,12 +1,17 @@
 package org.art.java_core.design.patterns.proxy;
 
-public class ProxyPatt {
+/**
+ * Proxy pattern (from GoF) - simple code example.
+ * Lazy/eager image loading simulation.
+ */
+public class Proxy {
+
     public static void main(String[] args) {
 
         //RealImage leads to image loading after instantiation even without
-        //display method invocation
-        Image img = new RealImage("D:/images/my.jpg");
-//        img.display();
+        Image img1 = new RealImage("D:/images/my.jpg");
+        //Eager image loading
+//        img1.display();
 
         //ProxyImage doesn't lead to image loading after instantiation
         Image img2 = new ProxyImage("D:/images/my.jpg");
@@ -22,27 +27,28 @@ interface Image {
 
 class RealImage implements Image {
 
-    String file;
+    private String file;
 
     public RealImage(String file) {
         this.file = file;
         load();
     }
 
-    public void load() {
-        System.out.println("File loading: " + file);
+    private void load() {
+        System.out.println("Image file loading: " + file);
     }
 
     @Override
     public void display() {
-        System.out.println("Image view " + file);
+        System.out.println("Image view: " + file);
     }
 }
 
 class ProxyImage implements Image {
 
-    String file;
-    RealImage image;
+    private String file;
+
+    private RealImage image;
 
     public ProxyImage(String file) {
         this.file = file;

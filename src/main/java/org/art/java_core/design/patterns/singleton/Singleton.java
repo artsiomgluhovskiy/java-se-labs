@@ -7,11 +7,12 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * Singleton pattern (from GoF) - simple code examples.
- * With singleton crashing test (via Reflection API).
+ *
+ * Singleton crashing test (via Reflection API).
  */
-public class SingletonApp {
+public class Singleton {
 
-    private static final Logger LOGGER = LogManager.getLogger(SingletonApp.class);
+    private static final Logger LOGGER = LogManager.getLogger(Singleton.class);
 
     public static void main(String[] args) throws IllegalAccessException, InstantiationException, InvocationTargetException {
 

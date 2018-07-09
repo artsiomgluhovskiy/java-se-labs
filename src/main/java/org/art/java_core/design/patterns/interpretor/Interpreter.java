@@ -1,7 +1,13 @@
 package org.art.java_core.design.patterns.interpretor;
 
-public class InterpretatorPatt {
+/**
+ * Interpreter pattern (from GoF) - code example.
+ * Simple arithmetic calculations interpretation.
+ */
+public class Interpreter {
+
     public static void main(String[] args) {
+
         //"1-2+3"
         Context context = new Context();
         Expression expr = context.evaluate("1+2+3");
@@ -15,7 +21,8 @@ interface Expression {
 
 //Terminal expression
 class NumberExpression implements Expression {
-    int number;
+
+    private int number;
 
     public NumberExpression(int number) {
         this.number = number;
@@ -30,8 +37,9 @@ class NumberExpression implements Expression {
 //Non-terminal expression
 class MinusExpression implements Expression {
 
-    Expression left;
-    Expression right;
+    private Expression left;
+
+    private Expression right;
 
     public MinusExpression(Expression left, Expression right) {
         this.left = left;
@@ -47,8 +55,9 @@ class MinusExpression implements Expression {
 //Non-terminal expression
 class PlusExpression implements Expression {
 
-    Expression left;
-    Expression right;
+    private Expression left;
+
+    private Expression right;
 
     public PlusExpression(Expression left, Expression right) {
         this.left = left;
@@ -62,6 +71,7 @@ class PlusExpression implements Expression {
 }
 
 class Context {
+
     Expression evaluate(String s) {
         int pos = s.length() - 1;
         while (pos > 0) {
@@ -72,8 +82,10 @@ class Context {
                 Expression right = new NumberExpression(Integer.valueOf(s.substring(pos + 1, s.length())));
                 char operator = s.charAt(pos);
                 switch (operator) {
-                    case '-': return new MinusExpression(left, right);
-                    case '+': return new PlusExpression(left, right);
+                    case '-':
+                        return new MinusExpression(left, right);
+                    case '+':
+                        return new PlusExpression(left, right);
                 }
             }
         }

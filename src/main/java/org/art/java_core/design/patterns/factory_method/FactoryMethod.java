@@ -2,7 +2,7 @@ package org.art.java_core.design.patterns.factory_method;
 
 /**
  * Factory method (from GoF) - simple code example.
- * WatchIF factory simulation.
+ * Watch factory simulation.
  */
 public class FactoryMethod {
 

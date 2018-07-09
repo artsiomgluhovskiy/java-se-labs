@@ -1,7 +1,13 @@
 package org.art.java_core.design.patterns.memento;
 
-public class MementoPatt {
+/**
+ * Memento pattern (from GoF) - code example.
+ * Simple game saving simulation.
+ */
+public class Memento {
+
     public static void main(String[] args) {
+
         Game game = new Game();
         game.set("Level 3", 30000);
         System.out.println(game);
@@ -12,8 +18,11 @@ public class MementoPatt {
 }
 
 class Game {
+
     private String level;
+
     private int ms;
+
     public void set(String level, int ms) {
         this.level = level;
         this.ms = ms;
@@ -39,8 +48,11 @@ class Game {
 
 //Memento
 class Save {
+
     private final String level;
+
     private final int ms;
+
     public Save(String level, int ms) {
         this.level = level;
         this.ms = ms;
@@ -57,7 +69,8 @@ class Save {
 
 //Caretaker
 class File {
-    Save save;
+
+    private Save save;
 
     public Save getSave() {
         return save;

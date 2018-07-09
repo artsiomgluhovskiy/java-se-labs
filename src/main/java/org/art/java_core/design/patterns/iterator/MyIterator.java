@@ -3,7 +3,7 @@ package org.art.java_core.design.patterns.iterator;
 import java.util.Arrays;
 
 /**
- * Iterator pattern (from GoF) - simple code example.
+ * Iterator pattern (from GoF) - code example.
  * Simple task iterator implementation.
  */
 public class MyIterator {

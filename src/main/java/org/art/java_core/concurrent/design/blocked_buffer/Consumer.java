@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class Consumer extends Thread {
 
-    public static final Logger log = LogManager.getLogger(Consumer.class);
+    public static final Logger LOG = LogManager.getLogger(Consumer.class);
 
     private BoundedBlockedBuffer buffer;
 

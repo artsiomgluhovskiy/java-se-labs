@@ -10,6 +10,7 @@ import java.util.LinkedList;
 public class BoundedBlockedBuffer {
 
     private int maxBufferSize;
+
     private Deque<Integer> buffer = new LinkedList<>();
 
     public BoundedBlockedBuffer(int maxBufferSize) {

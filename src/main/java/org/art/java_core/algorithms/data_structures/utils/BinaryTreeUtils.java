@@ -72,7 +72,7 @@ public class BinaryTreeUtils {
      * Deletes the node from the tree.
      *
      * @param root the root of the tree
-     * @param target the target node to delete
+     * @param target the services node to delete
      */
     public static void deleteNode(TreeNode root, TreeNode target) {
         if (target.left == null) {

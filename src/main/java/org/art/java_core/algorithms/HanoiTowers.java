@@ -8,7 +8,7 @@ public class HanoiTowers {
     /**
      * Prints the solution of the quiz.
      * @param source - the number of the source rod
-     * @param target - the number of the target rod
+     * @param target - the number of the services rod
      * @param transition - the number of the transition rod
      * @param n - the number of discs
      */

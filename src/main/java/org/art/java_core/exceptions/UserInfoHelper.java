@@ -12,7 +12,7 @@ public class UserInfoHelper {
 
     private static final Logger LOG = LogManager.getLogger(UserInfoHelper.class);
 
-    public static final String OUTPUT_FILE_PATH = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\JD_Tasks\\src\\main\\resources\\files\\exceptions\\user-info.txt";
+    public static final String OUTPUT_FILE_PATH = ".\\src\\main\\resources\\files\\exceptions\\user-info.txt";
 
     /**
      * Saves user info to a file.

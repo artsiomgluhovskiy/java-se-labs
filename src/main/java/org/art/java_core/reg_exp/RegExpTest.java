@@ -1,16 +1,20 @@
 package org.art.java_core.reg_exp;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class RegExpTest {
 
@@ -190,7 +194,7 @@ public class RegExpTest {
         System.out.println("Task 7. Find words in the file staring with vowels");
 
         //Initial data
-        String filename = "C:\\Users\\Lenovo\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\reg_exp\\task7.txt";
+        String filename = ".\\src\\main\\resources\\files\\reg_exp\\task7.txt";
 
         List<String> list = findWords(filename);
 
@@ -198,10 +202,35 @@ public class RegExpTest {
         printEmptyLines(1);
     }
 
-    private static List<String> findWords(String filePath) {
+    private static void makeTermsBold() {
+
+        System.out.println("Task 8. Find words in the text line and wraps them into <b> tags");
+
+        //Initial data
+        String textLine = "In привет computer science, functional Functional programming is a programming paradigm — a style " +
+                          "of building the structure and elements of computer programs—that treats computation as the " +
+                          "evaluation of mathematically-functions and avoids Mathematical changing-state and mutable data.";
+
+        String requestLine = "Привет\\n Functional:[]programming,,with mathematical-programs";
+
+        System.out.printf("Initial text:\n%s%n", textLine);
+        System.out.printf("Request line: %s%n", requestLine);
+
+        String[] terms = requestLine.split("\\W+");
+        for (String term : terms) {
+            if (StringUtils.isNotBlank(term)) {
+                textLine = textLine.replaceAll("((?i)\\b" + term + "\\b)", "<b>$1</b>");
+            }
+        }
+
+        System.out.printf("Formatted text:\n%s", textLine);
+        printEmptyLines(1);
+    }
+
+    private static List<String> findWords(String filename) {
         List<String> list = new ArrayList<>();
         Pattern pattern = Pattern.compile("\\b(?i:[aeiouy])\\w{0,}");
-        try (Scanner scanner = new Scanner(new FileReader(filePath))) {
+        try (Scanner scanner = new Scanner(new FileReader(filename))) {
             System.out.print("Origin text: \n\"");
             while(scanner.hasNext()) {
                 String token = scanner.next();
@@ -246,5 +275,8 @@ public class RegExpTest {
 
         //Task 7
         findWordsInFile();
+
+        //Task 8
+        makeTermsBold();
     }
 }

@@ -15,7 +15,7 @@ public class BasicAsynchronousFileChannelTest {
 
     private static final Logger LOGGER = LogManager.getLogger(BasicAsynchronousFileChannelTest.class);
 
-    private static final String FILE_PATH = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\nio\\large-file.txt";
+    private static final String FILE_PATH = ".\\src\\main\\resources\\files\\nio\\large-file.txt";
     private static final String DUMMY_STRING = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n";
     private static final int LINES = 5000;
 

@@ -226,7 +226,7 @@ public class StreamTest {
 
         System.out.println("Task 3. File walker test");
 
-        Path startPath = new File("C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\java\\org\\art\\java_core").toPath();
+        Path startPath = new File(".\\src\\main\\java\\org\\art\\java_core").toPath();
         System.out.println(startPath);
         try (Stream<Path> pathStream = Files.walk(startPath)) {
             pathStream
@@ -264,7 +264,7 @@ public class StreamTest {
 
         System.out.println("Task 5. Custom spliterator test");
 
-        Path startFile = new File("C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\stream_api\\file-source.txt").toPath();
+        Path startFile = new File(".\\src\\main\\resources\\files\\stream_api\\file-source.txt").toPath();
 
         try (FileChannel fc = FileChannel.open(startFile)) {
             MappedByteBuffer bB = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());

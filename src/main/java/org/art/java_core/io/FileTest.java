@@ -24,9 +24,9 @@ public class FileTest {
 
     private static final Logger LOG = LogManager.getLogger(FileTest.class);
 
-    private static final String IN_CHAR_FILE_PATH = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\io\\in-char-file.txt";
-    private static final String IN_BYTE_FILE_PATH = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\io\\in-byte-file.txt";
-    private static final String OUT_FILE_PATH = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\io\\out-file.txt";
+    private static final String IN_CHAR_FILE_PATH = ".\\src\\main\\resources\\files\\io\\in-char-file.txt";
+    private static final String IN_BYTE_FILE_PATH = ".\\src\\main\\resources\\files\\io\\in-byte-file.txt";
+    private static final String OUT_FILE_PATH = ".\\src\\main\\resources\\files\\io\\out-file.txt";
 
     private static final long DEFAULT_FILE_SIZE = 0x501400 * 5;
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 8;

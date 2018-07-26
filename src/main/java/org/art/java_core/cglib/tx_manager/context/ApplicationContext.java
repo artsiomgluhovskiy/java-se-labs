@@ -16,8 +16,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Simple application context implementation.
- * All business services should be registered in the context before
- * they are used.
+ * All business services should be registered and retrieved from the
+ * context before they are used.
  * <p>
  * App context is responsible for providing a transactional execution
  * of service methods marked by {@link Transactional} annotation.
@@ -26,7 +26,7 @@ public class ApplicationContext {
 
     public static final Logger LOG = LogManager.getLogger(ApplicationContext.class);
 
-    private Map<String, Object> services = new ConcurrentHashMap<>();
+    private final Map<String, Object> services = new ConcurrentHashMap<>();
 
     private Lock lockManager = new ReentrantLock();
 

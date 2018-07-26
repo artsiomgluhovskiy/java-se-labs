@@ -21,7 +21,7 @@ public class MetaspaceQuiz {
         }
 
         String newClassName1 = "MetaspaceQuiz";
-        String fileName = "C:\\Users\\HomePC\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\java\\org\\art\\java_core\\lab_additional\\metaspace_out_of_memory\\MetaspaceQuiz.java";
+        String fileName = ".\\src\\main\\java\\org\\art\\java_core\\lab_additional\\metaspace_out_of_memory\\MetaspaceQuiz.java";
         byte[] buffer = ClassLoaderUtil.loadByteCode(fileName);
 
         try{

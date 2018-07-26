@@ -12,11 +12,11 @@ public class BasicFileChannelTest {
 
     private static final Logger LOGGER = LogManager.getLogger(BasicFileChannelTest.class);
 
-    private static final String BASIC_FILE_PATH = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\nio\\basic-channel-test.txt";
-    private static final String IN_FILE = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\nio\\from-file.txt";
-    private static final String IN_FILE_1 = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\nio\\from-file1.txt";
-    private static final String OUT_FILE = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\nio\\to-file.txt";
-    private static final String OUT_FILE_1 = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\nio\\to-file1.txt";
+    private static final String BASIC_FILE_PATH = ".\\src\\main\\resources\\files\\nio\\basic-channel-test.txt";
+    private static final String IN_FILE = ".\\src\\main\\resources\\files\\nio\\from-file.txt";
+    private static final String IN_FILE_1 = ".\\src\\main\\resources\\files\\nio\\from-file1.txt";
+    private static final String OUT_FILE = ".\\src\\main\\resources\\files\\nio\\to-file.txt";
+    private static final String OUT_FILE_1 = ".\\src\\main\\resources\\files\\nio\\to-file1.txt";
 
     private static void readFromFileChannel() throws IOException {
         RandomAccessFile aFile = new RandomAccessFile(BASIC_FILE_PATH, "rw");

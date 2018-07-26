@@ -20,7 +20,7 @@ public class SerializationTest {
         //Task 1
         System.out.println("Task 1. Simple serialization test");
 
-        String filePath1 = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\io\\object-out-1.txt";
+        String filePath1 = ".\\src\\main\\resources\\files\\io\\object-out-1.txt";
 
         Computer computer = new Computer("Intel Core i7", 8192, 3.6, false);
         System.out.println("Before serializing:\n" + computer);
@@ -37,7 +37,7 @@ public class SerializationTest {
         //Task 2
         System.out.println("Task 2. Object serialization with transient field");
 
-        String filePath2 = "C:\\Users\\ahlukhouski\\IdeaProjects\\JavaLabs\\java-labs\\src\\main\\resources\\files\\io\\object-out-2.txt";
+        String filePath2 = ".\\src\\main\\resources\\files\\io\\object-out-2.txt";
 
         Touchpad touchpad = new Touchpad("Synaptics", 2.65, 1001);
         Notebook notebook = new Notebook("Intel Core i5", 8192, touchpad);

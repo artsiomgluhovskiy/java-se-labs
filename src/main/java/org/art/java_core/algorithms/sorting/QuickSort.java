@@ -42,7 +42,7 @@ public class QuickSort {
         //Quick Sort test
         StackDepthMeasurer measurer = new StackDepthMeasurer();
             //Original partition strategy
-        int[] testArray2 = {2, 56, 3, 1, 6, 28};
+        int[] testArray2 = {2, 56, 3, 1, 6, 28, 8, 0};
         System.out.println(Arrays.toString(testArray2) + " - array before sorting");
         OriginalPartition origPartition = new OriginalPartition();
         quickSort(testArray2, 0, testArray2.length - 1, origPartition, measurer);
@@ -51,9 +51,9 @@ public class QuickSort {
         measurer.resetMeasurer();
             //Hoare partition strategy
         HoarePartiotion hoarePartition = new HoarePartiotion();
-        int[] testArray3 = {2, 56, 3, 1, 6, 28};
+        int[] testArray3 = {2, 56, 3, 1, 6, 28, 8, 0};
         System.out.println(Arrays.toString(testArray3) + " - array before sorting");
-        tailRecursiveQuickSort(testArray3, 0, testArray3.length - 1, hoarePartition, measurer);
+        tailRecursiveQuickSort(testArray3, 0, testArray3.length - 1, origPartition, measurer);
         System.out.println(Arrays.toString(testArray3) + " - array after sorting (Hoare strategy)");
         System.out.println("Stack depth (tail recursion call): " + measurer.getMaxDepth());
     }

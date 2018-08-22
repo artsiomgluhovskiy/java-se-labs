@@ -7,7 +7,7 @@ import java.util.Arrays;
  */
 public class InsertionSort {
 
-    public static void selectionSort(int[] array) {
+    public static void insertionSort(int[] array) {
         for (int i = 1; i < array.length; i++) {
             int key = array[i];
             int j = i - 1;
@@ -22,7 +22,7 @@ public class InsertionSort {
     public static void main(String[] args) {
         int[] testArray = {2, 1, 5, 19, 6};
         System.out.println(Arrays.toString(testArray) + " - before sorting");
-        selectionSort(testArray);
+        insertionSort(testArray);
         System.out.println(Arrays.toString(testArray) + " - after sorting");
     }
 }

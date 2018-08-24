@@ -9,11 +9,12 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * "Longest Substring Without Repeating Characters" quiz solution from LeetCode.
+ *
+ * "To pointers" technique has been implemented.
  */
 public class LongestSubstring {
 
     public int lengthOfLongestSubstring(String s) {
-        //Two pointers technique
         int i = 0;
         int j = 0;
         int maxLength = 0;

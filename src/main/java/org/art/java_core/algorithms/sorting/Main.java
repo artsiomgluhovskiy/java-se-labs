@@ -6,5 +6,7 @@ public class Main {
         String returnTo = "Return to previous navigation: {0}";
         String assistedReturnMain = String.format(returnTo, mainMenu);
         System.out.println(assistedReturnMain);
+
+        //New test commit
     }
 }

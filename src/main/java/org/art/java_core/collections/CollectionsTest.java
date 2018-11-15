@@ -1,6 +1,7 @@
 package org.art.java_core.collections;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BinaryOperator;
 
 /**
@@ -324,6 +325,43 @@ public class CollectionsTest {
         }
     }
 
+    private static void concurrentIterationTask() {
+
+        System.out.println("Task 12. ConcurrentLinkedQueue Example with concurrent iteration (weak consistent iterator)");
+
+        //Initial data
+        Queue<String> strings = new ConcurrentLinkedQueue<>();
+        strings.offer("One");
+        strings.offer("Two");
+        strings.offer("Three");
+        strings.offer("Four");
+        strings.offer("Five");
+
+        System.out.println("Initial strings queue: " + strings);
+
+        //Multiple iterators mutate queue at the same time
+        Iterator<String> it1 = strings.iterator();
+        Iterator<String> it2 = strings.iterator();
+
+        if (it1.hasNext()) {
+            it1.next();
+            it1.next();
+            it1.remove();
+        }
+
+        while (it1.hasNext()) {
+            String str = it1.next();
+            System.out.println("Iterator 1: str - " + str);
+        }
+        strings.offer("Six");
+        while (it2.hasNext()) {
+            String str = it2.next();
+            System.out.println("Iterator 2: str - " + str);
+        }
+
+        System.out.println("Strings queue after modification: " + strings);
+    }
+
     public static void main(String[] args) {
 
         //Task 1
@@ -358,5 +396,8 @@ public class CollectionsTest {
 
         //Task 11
         enumMapTest();
+
+        //Task 12
+        concurrentIterationTask();
     }
 }

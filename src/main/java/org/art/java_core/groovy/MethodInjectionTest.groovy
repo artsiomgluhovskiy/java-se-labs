@@ -14,7 +14,7 @@ class MethodInjectionTest {
     }
 
     static void injectValidateMethod() {
-        Person.metaClass.validate = {->
+        Person.metaClass.validate = { ->
             delegate.properties.each {property, value ->
                 if (value == null) {
                     println "Entity validation failed: Property $property is null!"

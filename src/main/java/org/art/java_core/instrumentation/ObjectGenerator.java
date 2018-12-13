@@ -1,6 +1,5 @@
 package org.art.java_core.instrumentation;
 
-import gnu.trove.set.hash.TCharHashSet;
 import gnu.trove.set.hash.TIntHashSet;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;

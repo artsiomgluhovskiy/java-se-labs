@@ -3,7 +3,7 @@ package org.art.java_core.instrumentation;
 import java.lang.instrument.Instrumentation;
 
 /**
- * Simple utility class, which uses Instrumentation API
+ * Simple java agent class, which uses Instrumentation API
  * in order to define a size of objects in Java.
  *
  * Use the following command to run exec jar with a java agent:
@@ -14,6 +14,7 @@ public class ObjectSizeFetcher {
     private static Instrumentation instrumentation;
 
     public static void premain(String args, Instrumentation inst) {
+        System.out.println("Transformer Agent (Object Size Fetcher) is running...");
         instrumentation = inst;
     }
 

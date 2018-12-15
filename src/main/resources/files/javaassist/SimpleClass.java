@@ -2,6 +2,7 @@ public class SimpleClass {
 
     static {
         System.out.println(SimpleClass.class.getSimpleName() + " is loaded...");
+        System.out.println("Class loader: " + SimpleClass.class.getClassLoader());
     }
 
     public SimpleClass() {

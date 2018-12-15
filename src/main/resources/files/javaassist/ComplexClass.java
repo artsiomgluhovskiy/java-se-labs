@@ -2,6 +2,7 @@ public class ComplexClass {
 
     static {
         System.out.println(ComplexClass.class.getSimpleName() + " is loaded...");
+        System.out.println("Class loader: " + ComplexClass.class.getClassLoader());
     }
 
     public ComplexClass() {

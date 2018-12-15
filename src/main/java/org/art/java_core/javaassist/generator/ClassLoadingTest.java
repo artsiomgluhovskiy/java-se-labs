@@ -2,12 +2,19 @@ package org.art.java_core.javaassist.generator;
 
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.CtConstructor;
 
 import javax.tools.*;
 import java.io.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.Arrays;
 
+/**
+ * Generates and loads classes dynamically into Metaspace until it fills up.
+ *
+ * Before test launching max metaspace size should be restricted:
+ * e.g. -XX:MaxMetaspaceSize=128m
+ */
 public class ClassLoadingTest {
 
     private static final String JAVA_SOURCE_1 = "/files/javaassist/SimpleClass.java";
@@ -16,7 +23,16 @@ public class ClassLoadingTest {
     private static int LOADED_CLASS_NUMBER = 0;
 
     public static void main(String[] args) {
-        runClassLoadingTest(JAVA_SOURCE_1);
+        RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+        String metaSpaceSize = runtimeMxBean.getInputArguments()
+                .stream()
+                .filter(prop -> prop.startsWith("-XX:MaxMetaspaceSize"))
+        .findFirst()
+        .orElse("Not found!");
+        System.out.println("Max metaspace size: " + metaSpaceSize);
+
+//        runClassLoadingTest(JAVA_SOURCE_1);
+        runClassLoadingTest(JAVA_SOURCE_2);
     }
 
     private static void runClassLoadingTest(String srcFile) {
@@ -35,6 +51,7 @@ public class ClassLoadingTest {
         } catch (Error err) {
             //Trying to catch OutOfMemoryError:Metaspace
             err.printStackTrace();
+        } finally {
             System.out.println("Number of loaded classes: " + LOADED_CLASS_NUMBER);
         }
     }
@@ -66,31 +83,28 @@ public class ClassLoadingTest {
     private static void generateAndLoad(String srcFilePath) throws Exception {
         ClassPool classPool = ClassPool.getDefault();
         String classFilePath = srcFilePath.replace(".java", ".class");
+        String initClassName;
+        String currentClassName;
         try (InputStream in = ClassLoadingTest.class.getResourceAsStream(classFilePath)) {
             //Load initial class
             CtClass clazz = classPool.makeClass(in);
-            Class<?> aClass1 = clazz.toClass();
-            String initClassName = clazz.getName();
-            aClass1.newInstance();
-//            Class<?> aClass1 = Class.forName(clazz.getName());
+            clazz.toClass();
+            currentClassName = clazz.getName();
+            initClassName = currentClassName;
+            Class.forName(clazz.getName());
+            clazz.defrost();
             LOADED_CLASS_NUMBER++;
-            clazz.detach();
 
             //Generate and load new classes based on initial class
             int i = 0;
-            while (i < 2) {
-                clazz = classPool.makeClass(initClassName);
-                clazz.setName(initClassName + "_" + i);
+            while (i < Integer.MAX_VALUE) {
+                clazz = classPool.get(currentClassName);
+                currentClassName = initClassName + "_" + i;
+                clazz.setName(currentClassName);
                 clazz.toClass();
-                String className = clazz.getName();
-                System.out.println("New class name: " + className);
-                for (CtConstructor constructor : clazz.getConstructors()) {
-                    System.out.println(constructor.getName());
-                }
-                Class<?> aClass = Class.forName(clazz.getName());
-                aClass.newInstance();
+                Class.forName(currentClassName);
+                clazz.defrost();
                 LOADED_CLASS_NUMBER++;
-                clazz.detach();
                 i++;
             }
         }

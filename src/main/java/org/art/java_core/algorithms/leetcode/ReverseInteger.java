@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * "Reverse Integer" quiz solution from LeetCode.
- *
  */
 public class ReverseInteger {
 

@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * "To pointers" technique has been implemented.
  */
 public class MostWater {
+
     public int maxArea(int[] height) {
         int maxArea = 0;
         if (height == null) {

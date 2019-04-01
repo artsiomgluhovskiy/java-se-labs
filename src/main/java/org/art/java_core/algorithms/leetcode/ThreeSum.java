@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * "Three Sum" quiz solution from LeetCode.
  */
 public class ThreeSum {
+
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         if (nums == null || nums.length < 3) {

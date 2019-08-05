@@ -5,7 +5,6 @@ import org.art.java_core.stream_api.entity.Book;
 import java.time.Year;
 import java.util.*;
 import java.util.function.BinaryOperator;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -28,28 +27,30 @@ public class BookLibraryStreamTest {
                 Book.Topic.MEDICINE,
                 Year.of(2014),
                 25.2);
+        LIBRARY.add(nails);
+
         Book dragon = new Book("Compilers: Principles, Techniques and Tools",
                 Arrays.asList("Aho", "Lam", "Sethi", "Ullman"),
                 new int[]{1009},
                 Book.Topic.COMPUTING,
                 Year.of(2006),
                 23.6);
+        LIBRARY.add(dragon);
+
         Book voss = new Book("Voss",
-                Arrays.asList("Patrick White"),
+                Collections.singletonList("Patrick White"),
                 new int[]{478},
                 Book.Topic.FICTION,
                 Year.of(1957),
                 19.6);
+        LIBRARY.add(voss);
+
         Book lotr = new Book("Lord of the Rings",
-                Arrays.asList("Tolkien"),
+                Collections.singletonList("Tolkien"),
                 new int[]{531, 416, 624},
                 Book.Topic.FICTION,
                 Year.of(1955),
                 23.0);
-
-        LIBRARY.add(nails);
-        LIBRARY.add(dragon);
-        LIBRARY.add(voss);
         LIBRARY.add(lotr);
     }
 
@@ -76,7 +77,7 @@ public class BookLibraryStreamTest {
 
         //Variant 1
         int totalVolumes1 = LIBRARY.stream()
-                .reduce(0, (iden, book) -> Integer.sum(iden, Arrays.stream(book.getPageCounts()).sum()),
+                .reduce(0, (accum, book) -> Integer.sum(accum, Arrays.stream(book.getPageCounts()).sum()),
                         Integer::sum);
 
         //Variant 2 (more preferable)

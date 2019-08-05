@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class DispLine {
 
     private int displacement;
+
     private String line;
 
     public String toString() {

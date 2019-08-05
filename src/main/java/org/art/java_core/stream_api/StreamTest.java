@@ -1,5 +1,7 @@
 package org.art.java_core.stream_api;
 
+import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.art.java_core.nio.BasicAsynchronousFileChannelTest;
@@ -20,6 +22,7 @@ import java.util.regex.Pattern;
 import java.util.stream.*;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.*;
 
 /**
  * Stream API: simple code examples.
@@ -28,162 +31,18 @@ public class StreamTest {
 
     private static final Logger LOG = LogManager.getLogger(BasicAsynchronousFileChannelTest.class);
 
+    private static final Pattern FILE_NAME_PATTERN = Pattern.compile("test[a-zA-Z]*.txt");
     private static final Pattern TELEPHONE_NUMBER_PATTERN = Pattern.compile("[-+]?[0-9]*\\.?[0-9]+");
 
-    private static void basicStreamTest() {
-
-        System.out.println("Test 1. Stream API Basics");
-
-        /* *** Stream data sources *** */
-
-        //Get stream from array
-        String[] stringArray = {"Artem", "Alex", "Joshua", "Max", "Tim", "Raul"};
-        Stream<String> stringStream = Arrays.stream(stringArray);
-        stringStream.forEach(System.out::println);
-
-        //More preferable
-        stringStream = Stream.of("Artem", "Alex", "Joshua", "Max", "Tim", "Raul");
-        String namesString = stringStream.collect(Collectors.joining(", ", "Names: ", ""));
-        System.out.println(namesString);
-
-        //Empty stream
-        Stream.empty().forEach(System.out::println);
-
-        //Reuse of streams (stream suppliers)
-        Supplier<Stream<String>> streamSupplier =
-                () -> Stream.of("a", "b", "c", "d")
-                        .filter(str -> str.startsWith("a"));
-
-        boolean res1 = streamSupplier.get().anyMatch(str -> true);
-        boolean res2 = streamSupplier.get().noneMatch(str -> true);
-        System.out.println(res1);
-        System.out.println(res2);
-
-        //Infinite sequence of numbers
-        Stream.iterate(2, x -> x + 2)
-                .limit(6)
-                .forEach(System.out::print);
-
-        printEmptyLines(1);
-
-        //Stream concatenation
-        Stream.concat(
-                Stream.of(2, 4, 50),
-                Stream.of(1, 5, 6))
-                .forEach(System.out::print);
-
-        printEmptyLines(1);
-
-        /* *** Intermediate operations *** */
-
-        //Map
-        Stream.of("10", "11", "13")
-                .map(s -> Integer.parseInt(s, 10))
-                .forEach(System.out::print);
-
-        printEmptyLines(1);
-
-        //Flat map
-        Stream.of(3, 2, 1, 0)
-                .flatMap(x -> Stream.of(0, x))
-                .forEach(System.out::print);
-
-        printEmptyLines(1);
-
-        //Sorted
-        Stream.of(120, 57, 48, 1, 2, 99)
-                .sorted()
-                .forEach(System.out::print);
-
-        printEmptyLines(1);
-
-        //Distinct
-        Stream.of(2, 1, 8, 1, 3, 2)
-                .distinct()
-                .forEach(System.out::print);
-
-        printEmptyLines(1);
-
-        //Peek (avoid terminal 'forEach')
-        Stream.of(0, 3, 0, 0, 5)
-                .peek(x -> System.out.println("before distinct: " + x))
-                .distinct()
-                .peek(x -> System.out.println("after distinct" + x))
-                .map(x -> x * x)
-                .forEach(x -> System.out.println("after map: " + x));
-
-        //Boxed (from primitive to object type)
-        DoubleStream.of(2.3, Math.PI)
-                .boxed()
-                .map(Object::getClass)
-                .forEach(System.out::print);
-
-        printEmptyLines(1);
-
-        //Limit
-        IntStream.of(120, 410, 85, 32, 314, 12)
-                .filter(x -> x < 300)
-                .map(x -> x + 11)
-                .limit(3)
-                .forEach(System.out::print);
-
-        /* *** Terminal operations *** */
-
-        //Ordered for each (parallel stream)
-        IntStream.range(0, 10000)
-                .parallel()
-                .filter(x -> x % 1000 == 0)
-                .map(x -> x / 1000)
-                .forEachOrdered(System.out::println);
-
-        //Collect
-        List<Integer> col1 = Stream.of(1, 2, 3)
-                .collect(Collectors.toList());
-        System.out.println(col1);
-
-        String str = Stream.of(1, 2, 3)
-                .map(String::valueOf)
-                .collect(Collectors.joining("-", "<", ">"));
-        System.out.println(str);
-
-        List<String> col2 = Stream.of("a", "c", "b", "d").collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-        System.out.println(col2);
-
-        String[] arr = Stream.of("a", "b", "c", "d").toArray(String[]::new);
-        System.out.println(Arrays.toString(arr));
-
-        //Reduce
-        int sum = Stream.of(1, 2, 3, 4, 5)
-                .reduce(10, (acc, x) -> acc + x);
-        System.out.println(sum);
-
-        Optional<Integer> result = Stream.<Integer>empty()
-                .reduce((acc, x) -> acc + x);
-        System.out.println(result.isPresent());
-
-        OptionalInt max = IntStream.of(3, 5, 6, 7, 10, 1, 5)
-                .reduce(Math::max);
-        System.out.println("Max value is: " + max.getAsInt());
-
-        //All match
-        boolean res = Stream.of(1, 2, 3, 4, 5)
-                .allMatch(x -> x <= 7);
-        System.out.println(res);
-
-        //Summary statistics
-        LongSummaryStatistics stats = LongStream.range(2, 16)
-                .summaryStatistics();
-        System.out.println(stats.getAverage());
-        printEmptyLines(1);
-    }
+    private static final String IO_EXC_ERROR_MESSAGE = "IO Exception has been caught!";
 
     private static void collectorsTest() {
 
-        System.out.println("Test 2. Collectors API");
+        System.out.println("Test 1. Collectors API");
 
         //Custom map collector
         Map<Integer, String> map = Stream.of(50, 55, 69, 20, 19, 52)
-                .collect(Collectors.toMap(
+                .collect(toMap(
                         i -> i % 5,
                         i -> String.format("<%d>", i),
                         (a, b) -> String.join(", ", a, b)
@@ -224,9 +83,10 @@ public class StreamTest {
 
     private static void fileWalkerTest() {
 
-        System.out.println("Task 3. File walker test");
+        System.out.println("Task 2. File walker test");
 
-        Path startPath = new File(".\\src\\main\\java\\org\\art\\java_core").toPath();
+        String targetDir = "./src/main/java/org/art/java_core";
+        Path startPath = Path.of(targetDir);
         System.out.println(startPath);
         try (Stream<Path> pathStream = Files.walk(startPath)) {
             pathStream
@@ -235,37 +95,37 @@ public class StreamTest {
                     .map(f -> f.getAbsolutePath() + " " + f.length())
                     .forEachOrdered(System.out::println);
         } catch (IOException e) {
-            LOG.error("IO Exception has been caught!", e);
+            LOG.error(IO_EXC_ERROR_MESSAGE, e);
         }
         printEmptyLines(1);
     }
 
     private static void simpleGrepTest() {
 
-        System.out.println("Task 4. Simple 'grep' program simulation");
+        System.out.println("Task 3. Simple 'grep' program simulation");
 
-        Path start = new File("C:\\Users\\admin1\\MyDocs\\my-heap\\Music\\New folder").toPath();
-        Pattern filePattern = Pattern.compile("test[a-zA-Z]*.txt");
+        String targetDir = "./src/main/resources/files/stream_api";
+
+        Path start = Path.of(targetDir);
 
         try (Stream<Path> pathStream = Files.walk(start)) {
             pathStream
                     .filter(Files::isRegularFile)
-                    .filter(path -> filePattern.matcher(path.toString()).find())
-                    .map(StreamTest::readLines)
-                    .filter(line -> !line.isEmpty())
+                    .filter(path -> FILE_NAME_PATTERN.matcher(path.toString()).find())
+                    .map(Path::toAbsolutePath)
                     .forEach(System.out::println);
         } catch (IOException e) {
-            LOG.error("IO Exception has been caught!", e);
+            LOG.error(IO_EXC_ERROR_MESSAGE, e);
         }
         printEmptyLines(1);
     }
 
     private static void customSpliteratorTest() {
 
-        System.out.println("Task 5. Custom spliterator test");
+        System.out.println("Task 4. Custom spliterator test");
 
-        Path startFile = new File(".\\src\\main\\resources\\files\\stream_api\\file-source.txt").toPath();
-
+        String targetFilePath = "./src/main/resources/files/stream_api/custom_data.txt";
+        Path startFile = Path.of(targetFilePath);
         try (FileChannel fc = FileChannel.open(startFile)) {
             MappedByteBuffer bB = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             Spliterator<DispLine> ls = new LineSpliterator(bB, 0, bB.limit() - 1);
@@ -273,44 +133,39 @@ public class StreamTest {
                     .filter(dl -> TELEPHONE_NUMBER_PATTERN.matcher(dl.getLine()).find())
                     .forEachOrdered(System.out::println);
         } catch (IOException e) {
-            LOG.error("IO Exception has been caught!", e);
+            LOG.error(IO_EXC_ERROR_MESSAGE, e);
         }
         printEmptyLines(1);
     }
 
     private static void getByTypeTest() {
 
-        System.out.println("Task 6. Gets elements with a specified type");
+        System.out.println("Task 5. Gets elements with the specified type");
 
         List<A> itemList = asList(new A("A1"), new B("B1"), new C("C1"), new A("A2"));
-
         itemList.stream()
                 .flatMap(selectItem(B.class))
                 .forEach(item -> System.out.println("Item : " + item.getClass().getSimpleName()));
-
         printEmptyLines(1);
     }
 
     private static void cartesianProductTest() {
 
-        System.out.println("Task 7. Cartesian product test");
+        System.out.println("Task 6. Cartesian product test");
 
         List<List<String>> input = asList(
                 asList("a", "b", "c"),
                 asList("x", "y"),
                 asList("1", "2", "3")
         );
-
         Supplier<Stream<String>> sup = input.stream()
                 //Stream<List<String>>
-                .map(listik -> (Supplier<Stream<String>>) listik::stream)
+                .map(list -> (Supplier<Stream<String>>) list::stream)
                 //Stream<Supplier<Stream<String>>>
                 .reduce((sup1, sup2) -> () -> sup1.get().flatMap(e1 -> sup2.get().map(e2 -> e1 + e2)))
                 //Optional<Supplier<Stream<String>>>
-                .orElse(() -> Stream.of(""));
-
+                .orElse(() -> Stream.of(StringUtils.EMPTY));
         sup.get().forEach(System.out::println);
-
         printEmptyLines(1);
     }
 
@@ -318,9 +173,9 @@ public class StreamTest {
 
     private static void factorialTest() {
 
-        System.out.println("Task 8. Factorial calculation test (recursive lambda)");
+        System.out.println("Task 7. Factorial calculation test (recursive lambda)");
 
-        factorialFunction = (val) -> val == 0 ? 1 : val * factorialFunction.apply(val - 1);
+        factorialFunction = val -> val == 0 ? 1 : val * factorialFunction.apply(val - 1);
 
         System.out.println("Factorial result: " + calculate(4, factorialFunction));
         printEmptyLines(1);
@@ -328,7 +183,7 @@ public class StreamTest {
 
     private static void personListTest() {
 
-        System.out.println("Task 9. Person list test");
+        System.out.println("Task 8. Person list test");
 
         List<Person> persons = Arrays.asList(
                 new Person("John", "Smith", 25),
@@ -342,13 +197,12 @@ public class StreamTest {
                 .filter(p -> (p.getFirstName() + p.getLastName()).toCharArray().length <= 15)
                 .max(Comparator.comparingInt(Person::getAge))
                 .ifPresent(p -> System.out.printf("Full name: %s %s, age: %d%n", p.getFirstName(), p.getLastName(), p.getAge()));
-
         printEmptyLines(1);
     }
 
     private static void parallelSortTest() {
 
-        System.out.println("Task 10. Parallel sort speed test");
+        System.out.println("Task 9. Parallel sort speed test");
 
         ForkJoinPool commonPool = ForkJoinPool.commonPool();
 
@@ -370,7 +224,7 @@ public class StreamTest {
         long start2 = System.nanoTime();
         intList2.parallelStream()
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(toList());
         System.out.println("ArrayList has been sorted (parallel method). Required time: " + (System.nanoTime() - start2) / 1000 + " ms.");
 
         //Sequential sort
@@ -381,23 +235,37 @@ public class StreamTest {
         printEmptyLines(1);
     }
 
-    private static String readLines(Path path) {
-        try {
-            long matchCount = Files.readAllLines(path).stream()
-                    .filter(line -> TELEPHONE_NUMBER_PATTERN.matcher(line).find())
-                    .count();
-            return matchCount == 0 ? "" : path + ": " + matchCount;
+    private static void groupUsersTest() {
+
+        System.out.println("Task 10. Grouping users test");
+
+        String userDataFilePath = "./src/main/resources/files/stream_api/user_data.txt";
+
+        Collector<UserInfo, List<String>, List<String>> userOpCollector = Collector.of(
+                ArrayList::new,
+                (list, item) -> list.add(item.getOperation()),
+                (list1, list2) -> {
+                    list1.addAll(list2);
+                    return list1;
+                });
+        try (Stream<String> userLines = Files.lines(Path.of(userDataFilePath))) {
+            Map<String, List<String>> userInfo = userLines
+                    .map(line -> line.split(","))
+                    .filter(values -> values.length > 2)
+                    .map(values -> new UserInfo(values[0], values[1], values[2]))
+                    .collect(groupingBy(UserInfo::getLogin, userOpCollector));
+            System.out.println(userInfo);
         } catch (IOException e) {
-            LOG.error("IO Exception has been caught!", e);
-            return "";
+            LOG.error(IO_EXC_ERROR_MESSAGE, e);
         }
+        printEmptyLines(1);
     }
 
-    private static <T, TT> Function<T, Stream<TT>> selectItem(Class<TT> clazz) {
+    private static <T, V> Function<T, Stream<V>> selectItem(Class<V> clazz) {
         return e -> clazz.isInstance(e) ? Stream.of(clazz.cast(e)) : null;
     }
 
-    private static <T, R> R calculate(T value, Function<T, R> function) {
+    private static <V, R> R calculate(V value, Function<V, R> function) {
         R result;
         result = function.apply(value);
         return result;
@@ -412,34 +280,34 @@ public class StreamTest {
     public static void main(String[] args) {
 
         //Test 1
-        basicStreamTest();
-
-        //Test 2
         collectorsTest();
 
-        //Task 3
+        //Task 2
         fileWalkerTest();
 
-        //Task 4
+        //Task 3
         simpleGrepTest();
 
-        //Task 5
+        //Task 4
         customSpliteratorTest();
 
-        //Task 6
+        //Task 5
         getByTypeTest();
 
-        //Task 7
+        //Task 6
         cartesianProductTest();
 
-        //Task 8
+        //Task 7
         factorialTest();
 
-        //Task 9
+        //Task 8
         personListTest();
 
-        //Task 10
+        //Task 9
         parallelSortTest();
+
+        //Task 10
+        groupUsersTest();
     }
 }
 
@@ -447,7 +315,7 @@ class A {
 
     private String name;
 
-    public A(String name) {
+    A(String name) {
         this.name = name;
     }
 
@@ -458,14 +326,22 @@ class A {
 
 class B extends A {
 
-    public B(String name) {
+    B(String name) {
         super(name);
     }
 }
 
 class C extends B {
 
-    public C(String name) {
+    C(String name) {
         super(name);
     }
+}
+
+@Data
+class UserInfo {
+
+    private final String userId;
+    private final String operation;
+    private final String login;
 }

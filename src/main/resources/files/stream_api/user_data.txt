@@ -1,0 +1,9 @@
+user_1,operation_1,login_1
+user_2,operation_2,login_2
+user_3,operation_1,login_3
+user_4,operation_1,login_4
+user_1,operation_2,login_1
+user_2,operation_3,login_2
+user_3,operation_2,login_3
+user_3,operation_3,login_3
+user_4,operation_2,login_4

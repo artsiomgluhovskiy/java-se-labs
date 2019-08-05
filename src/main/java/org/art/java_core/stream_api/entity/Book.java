@@ -15,7 +15,7 @@ import java.util.List;
 public class Book {
 
     public enum Topic {
-        HISTRORY,
+        HISTORY,
         PROGRAMMING,
         FICTION,
         MEDICINE,

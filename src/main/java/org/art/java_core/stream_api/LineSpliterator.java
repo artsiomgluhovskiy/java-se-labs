@@ -8,10 +8,12 @@ import java.util.function.Consumer;
 
 class LineSpliterator implements Spliterator<DispLine> {
 
-    private ByteBuffer bb;
-    private int lo, hi;
+    private int lo;
+    private int hi;
 
-    static final int AVERAGE_LINE_LENGTH = "+4354.23523".length();
+    private ByteBuffer bb;
+
+    private static final int DEFAULT_AVERAGE_LINE_LENGTH = 10;
 
     LineSpliterator(ByteBuffer bb, int lo, int hi) {
         this.bb = bb;
@@ -48,7 +50,7 @@ class LineSpliterator implements Spliterator<DispLine> {
 
     @Override
     public long estimateSize() {
-        return (hi - lo + 1) / AVERAGE_LINE_LENGTH;
+        return (hi - lo + 1) / DEFAULT_AVERAGE_LINE_LENGTH;
     }
 
     @Override

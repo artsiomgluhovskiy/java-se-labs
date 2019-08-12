@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * "Remove Element" quiz solution from LeetCode.
+ */
 public class RemoveElementArrayInPlace {
 
     public int removeElement(int[] nums, int val) {

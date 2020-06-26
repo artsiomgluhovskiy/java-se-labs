@@ -17,7 +17,7 @@ import static org.art.java_core.io.net.NetConstants.TCP_PORT;
 
 public abstract class BaseNonblockingServer implements Server {
 
-    private static final Logger LOGGER = LogManager.getLogger(NonblockingSingleThreadedServer.class);
+    private static final Logger log = LogManager.getLogger(NonblockingSingleThreadedServer.class);
 
     private Map<SocketChannel, Queue<ByteBuffer>> pendingData;
     private Selector selector;
@@ -51,7 +51,7 @@ public abstract class BaseNonblockingServer implements Server {
                 }
             }
         } catch (IOException e) {
-            LOGGER.error("Exception while server launching!", e);
+            log.error("Exception while server launching!", e);
         }
     }
 
@@ -88,7 +88,7 @@ public abstract class BaseNonblockingServer implements Server {
         ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
         SocketChannel sc = ssc.accept();    //non-blocking, never null
         sc.configureBlocking(false);
-        LOGGER.debug("Connection from {}", sc);
+        log.debug("Connection from {}", sc);
         sc.register(key.selector(), SelectionKey.OP_READ);
         pendingData.put(sc, new ConcurrentLinkedQueue<>());
     }

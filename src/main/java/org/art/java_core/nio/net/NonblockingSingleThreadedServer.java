@@ -1,8 +1,5 @@
 package org.art.java_core.nio.net;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
@@ -15,8 +12,6 @@ import java.util.Queue;
  * Simple Non-blocking Server Implementation (one thread maintains all server operations).
  */
 public class NonblockingSingleThreadedServer extends BaseNonblockingServer {
-
-    private static final Logger LOGGER = LogManager.getLogger(NonblockingSingleThreadedServer.class);
 
     public NonblockingSingleThreadedServer(Map<SocketChannel, Queue<ByteBuffer>> pendingData) {
         super(pendingData);
@@ -32,7 +27,7 @@ public class NonblockingSingleThreadedServer extends BaseNonblockingServer {
         socket.register(key.selector(), SelectionKey.OP_WRITE);
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         NonblockingSingleThreadedServer server = new NonblockingSingleThreadedServer(new HashMap<>());
         server.start();
     }

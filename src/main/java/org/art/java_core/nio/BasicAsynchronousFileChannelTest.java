@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Path;
@@ -13,58 +14,64 @@ import java.util.concurrent.Future;
 
 public class BasicAsynchronousFileChannelTest {
 
-    private static final Logger LOGGER = LogManager.getLogger(BasicAsynchronousFileChannelTest.class);
+    private static final Logger log = LogManager.getLogger(BasicAsynchronousFileChannelTest.class);
 
-    private static final String FILE_PATH = ".\\src\\main\\resources\\files\\nio\\large-file.txt";
+    private static final String FILE_PATH = "files/nio/large-file.txt";
     private static final String DUMMY_STRING = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n";
     private static final int LINES = 5000;
 
-    private static void generateLargeFile() {
-        File file = new File(FILE_PATH);
+    private static void generateLargeFile() throws Exception {
+        File file = getFile(FILE_PATH);
         try (Writer out = new BufferedWriter(new FileWriter(file))) {
             char[] buffer = DUMMY_STRING.toCharArray();
             for (int i = 0; i < LINES; i++) {
                 out.write(buffer);
             }
             out.flush();
-            LOGGER.debug("File was successfully generated!");
+            log.debug("File was successfully generated!");
         } catch (IOException e) {
-            LOGGER.error("Exception while file generating!", e);
+            log.error("Exception while file generating!", e);
         }
     }
 
-    private static void blockingRead() {
+    private static void blockingRead() throws Exception {
         char[] buffer = new char[DUMMY_STRING.toCharArray().length * LINES];
-        File file = new File(FILE_PATH);
+        File file = getFile(FILE_PATH);
         try (Reader in = new BufferedReader(new FileReader(file))) {
-            LOGGER.debug("Before blocking reading...");
+            log.debug("Before blocking reading...");
             in.read(buffer);        //blocking operation
-            LOGGER.debug("File was successfully read! Buffer size: {}", buffer.length);
+            log.debug("File was successfully read! Buffer size: {}", buffer.length);
         } catch (IOException e) {
-            LOGGER.error("Exception while file reading!", e);
+            log.error("Exception while file reading!", e);
         }
     }
 
-    private static void nonBlockingRead() {
-        Path filePath = Paths.get(FILE_PATH);
-        try {
-            AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
+    private static void nonBlockingRead() throws Exception {
+        URL fileURL = BasicAsynchronousFileChannelTest.class.getClassLoader().getResource(FILE_PATH);
+        Path filePath = Paths.get(fileURL.toURI());
+        try (AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ)) {
             ByteBuffer buffer = ByteBuffer.allocate(DUMMY_STRING.getBytes().length * LINES);
-            LOGGER.debug("Before non-blocking reading...");
+            log.debug("Before non-blocking reading...");
             Future<Integer> operation = fileChannel.read(buffer, 0);        //non-blocking operation
             while (!operation.isDone()) {
-                LOGGER.debug("After 'read' method invocation. File was read: {}", operation.isDone());
+                log.debug("After 'read' method invocation. File was read: {}", operation.isDone());
             }
-            LOGGER.debug("File was successfully read! {} bytes were read.", operation.get());
+            log.debug("File was successfully read! {} bytes were read.", operation.get());
             buffer.flip();
             //ByteBuffer is ready to be read...
         } catch (Exception e) {
-            LOGGER.error("Exception while file reading!", e);
+            log.error("Exception occurred while file reading!", e);
         }
     }
 
-    public static void main(String[] args) {
+    private static File getFile(String path) throws Exception {
+        URL fileURL = BasicAsynchronousFileChannelTest.class.getClassLoader().getResource(path);
+        return Paths.get(fileURL.toURI()).toFile();
+    }
 
+    public static void main(String[] args) throws Exception {
+
+        //Generating input file
         generateLargeFile();
 
         //Blocking reading from the file

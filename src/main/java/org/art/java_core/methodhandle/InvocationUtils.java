@@ -34,7 +34,7 @@ public class InvocationUtils {
         throw new UnsupportedOperationException("Utility class!");
     }
 
-    public static <V> V callunchecked(Callable<V> action) {
+    public static <V> V callUnchecked(Callable<V> action) {
         return SILENT_INVOKER.invoke(action);
     }
 }

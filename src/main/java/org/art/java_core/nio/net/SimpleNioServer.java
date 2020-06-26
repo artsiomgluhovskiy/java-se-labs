@@ -16,12 +16,10 @@ import static org.art.java_core.io.net.NetConstants.TCP_PORT;
 
 public class SimpleNioServer {
 
-    private static final Logger LOGGER = LogManager.getLogger(SimpleNioServer.class);
-
-    private ExecutorService pool;
+    private static final Logger log = LogManager.getLogger(SimpleNioServer.class);
 
     public void start() throws InterruptedException {
-        pool = Executors.newFixedThreadPool(10);
+        ExecutorService pool = Executors.newFixedThreadPool(10);
         try {
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
             serverSocketChannel.bind(new InetSocketAddress(HOST, TCP_PORT));
@@ -30,12 +28,10 @@ public class SimpleNioServer {
                 pool.submit(() -> NetUtils.process(socketChannel));
             }
         } catch (IOException e) {
-            LOGGER.error("Exception while server launching!", e);
+            log.error("Exception while server launching!", e);
         } finally {
-            if (pool != null) {
-                pool.shutdown();
-                pool.awaitTermination(1, TimeUnit.SECONDS);
-            }
+            pool.shutdown();
+            pool.awaitTermination(1, TimeUnit.SECONDS);
         }
     }
 

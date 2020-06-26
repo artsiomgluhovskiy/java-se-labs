@@ -9,27 +9,29 @@ import java.nio.channels.SocketChannel;
 
 public class BasicSocketChannelTest {
 
-    private static final Logger LOG = LogManager.getLogger(BasicSocketChannelTest.class);
+    private static final Logger log = LogManager.getLogger(BasicSocketChannelTest.class);
 
     private static void blockingSocketChannelTest() throws IOException {
-        SocketChannel socketChannel = SocketChannel.open();
-        boolean connectionEstablished = socketChannel.connect(new InetSocketAddress("onliner.by", 443));
-        LOG.debug("Connection established: {}", connectionEstablished);
-    }
-
-    private static void nonBlockingSocketChannelTest() throws IOException, InterruptedException {
-        SocketChannel socketChannel = SocketChannel.open();
-        socketChannel.configureBlocking(false);
-        boolean connectionEstablished = socketChannel.connect(new InetSocketAddress("onliner.by", 443));
-        LOG.debug("After 'connect()' method.");
-        LOG.debug("Connection established: {}", connectionEstablished);
-        while (!socketChannel.finishConnect()) {
-            Thread.sleep(10);
+        try (SocketChannel socketChannel = SocketChannel.open()) {
+            boolean connectionEstablished = socketChannel.connect(new InetSocketAddress("onliner.by", 443));
+            log.debug("Connection established: {}", connectionEstablished);
         }
-        LOG.debug("Connection established: true");
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    private static void nonBlockingSocketChannelTest() throws Exception {
+        try (SocketChannel socketChannel = SocketChannel.open()) {
+            socketChannel.configureBlocking(false);
+            boolean connectionEstablished = socketChannel.connect(new InetSocketAddress("onliner.by", 443));
+            log.debug("After 'connect()' method.");
+            log.debug("Connection established: {}", connectionEstablished);
+            while (!socketChannel.finishConnect()) {
+                Thread.sleep(10);
+            }
+            log.debug("Connection established: true");
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
         blockingSocketChannelTest();
         nonBlockingSocketChannelTest();
     }

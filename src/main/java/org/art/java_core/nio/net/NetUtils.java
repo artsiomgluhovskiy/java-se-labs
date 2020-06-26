@@ -10,10 +10,10 @@ import java.util.Objects;
 
 public class NetUtils {
 
-    private static final Logger LOGGER = LogManager.getLogger(NetUtils.class);
+    private static final Logger log = LogManager.getLogger(NetUtils.class);
 
     public static void process(SocketChannel socketChannel) {
-        LOGGER.debug("Connection from {}", socketChannel);
+        log.debug("Connection from {}", socketChannel);
         try {
             ByteBuffer buffer = ByteBuffer.allocateDirect(32);
             while (socketChannel.read(buffer) != -1) {
@@ -22,7 +22,7 @@ public class NetUtils {
                 buffer.clear();
             }
         } catch (IOException e) {
-            LOGGER.error("Exception while socket processing!", e);
+            log.error("Exception while socket processing!", e);
         }
     }
 

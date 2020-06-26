@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 public class MetaspaceQuiz {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
 
         Class clazz = MetaspaceQuiz.class;
         CustomClassLoader loader = new CustomClassLoader();

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static org.art.java_core.methodhandle.InvocationUtils.callunchecked;
+import static org.art.java_core.methodhandle.InvocationUtils.callUnchecked;
 
 /**
  * Simple example, which demonstrates the usage of {@link java.lang.invoke.LambdaMetafactory} API
@@ -25,7 +25,7 @@ public class LambdaMetafactoryTest {
 
         List<URL> urls = strings.stream()
                 //Throws checked MalformedURLException
-                .map((str) -> callunchecked(() -> new URL(str)))
+                .map((str) -> callUnchecked(() -> new URL(str)))
                 .collect(toList());
 
         System.out.println("Generated URLs: " + urls);

@@ -9,9 +9,9 @@ import kotlin.coroutines.resume
 
 var continuation: Continuation<String>? = null
 
-fun main(args: Array<String>) {
-    val job = GlobalScope.launch(Dispatchers.Unconfined) {
-        while(true) {
+fun main() {
+    GlobalScope.launch(Dispatchers.Unconfined) {
+        while (true) {
             println(suspendHere())
         }
     }

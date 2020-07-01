@@ -7,11 +7,10 @@ import org.apache.ftpserver.listener.Listener;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.ftpserver.usermanager.impl.BaseUser;
-import org.apache.ftpserver.usermanager.impl.PropertiesUserManager;
 import org.apache.ftpserver.usermanager.impl.WritePermission;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +21,16 @@ import java.util.Map;
  */
 public class FtpServerTest {
 
+    private static final Logger log = LoggerFactory.getLogger(FtpServerTest.class);
+
+    private static final int SERVER_PORT = 8085;
+
+
     public static void main(String[] args) throws FtpException {
 
         FtpServerFactory serverFactory = new FtpServerFactory();
         ListenerFactory factory = new ListenerFactory();
-        factory.setPort(8085);
+        factory.setPort(SERVER_PORT);
         Listener listener = factory.createListener();
         serverFactory.addListener("default", listener);
 
@@ -44,39 +48,40 @@ public class FtpServerTest {
         Map<String, Ftplet> ftplets = new HashMap<>();
 
         ftplets.put("testFtplet", new Ftplet() {
+
             @Override
-            public void init(FtpletContext ftpletContext) throws FtpException {
-                System.out.println("*** Init");
+            public void init(FtpletContext ftpletContext) {
+                log.info("*** Init");
             }
 
             @Override
             public void destroy() {
-                System.out.println("*** Destroy");
+                log.info("*** Destroy");
             }
 
             @Override
-            public FtpletResult beforeCommand(FtpSession ftpSession, FtpRequest ftpRequest) throws FtpException, IOException {
-                System.out.println("*** Before Command");
+            public FtpletResult beforeCommand(FtpSession ftpSession, FtpRequest ftpRequest) {
+                log.info("*** Before Command");
 
                 return FtpletResult.DEFAULT;
             }
 
             @Override
-            public FtpletResult afterCommand(FtpSession ftpSession, FtpRequest ftpRequest, FtpReply ftpReply) throws FtpException, IOException {
-                System.out.println("*** After Command");
+            public FtpletResult afterCommand(FtpSession ftpSession, FtpRequest ftpRequest, FtpReply ftpReply) {
+                log.info("*** After Command");
 
                 return FtpletResult.NO_FTPLET;
             }
 
             @Override
-            public FtpletResult onConnect(FtpSession ftpSession) throws FtpException, IOException {
-                System.out.println("*** On Connect");
+            public FtpletResult onConnect(FtpSession ftpSession) {
+                log.info("*** On Connect");
                 return FtpletResult.DEFAULT;
             }
 
             @Override
-            public FtpletResult onDisconnect(FtpSession ftpSession) throws FtpException, IOException {
-                System.out.println("*** On Disconnect");
+            public FtpletResult onDisconnect(FtpSession ftpSession) {
+                log.info("*** On Disconnect");
 
                 return FtpletResult.DEFAULT;
             }

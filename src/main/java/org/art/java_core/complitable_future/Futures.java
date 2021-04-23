@@ -1,6 +1,6 @@
 package org.art.java_core.complitable_future;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -11,8 +11,8 @@ public class Futures {
         final CompletableFuture<T> future = new CompletableFuture<>();
         observable
                 .doOnError(future::completeExceptionally)
-                .single()
-                .forEach(future::complete);
+                .single(null)
+                .doOnSuccess(future::complete);
         return future;
     }
 
@@ -21,7 +21,7 @@ public class Futures {
         observable
                 .doOnError(future::completeExceptionally)
                 .toList()
-                .forEach(future::complete);
+                .doOnSuccess(future::complete);
         return future;
     }
 
@@ -32,7 +32,7 @@ public class Futures {
                 subscriber.onError(error);
             } else {
                 subscriber.onNext(result);
-                subscriber.onCompleted();
+                subscriber.onComplete();
             }
         }));
     }

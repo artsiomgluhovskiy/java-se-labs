@@ -2,12 +2,11 @@ package org.art.java_core.complitable_future;
 
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.Response;
+import io.reactivex.Observable;
 import org.art.java_core.complitable_future.http.Question;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import rx.Observable;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
@@ -236,7 +235,7 @@ public class TaskLauncher extends AbstractTaskLauncher {
      */
     void pushExample() {
         final List<String> list = Arrays.asList("Java", "Scala", "Clojure", "Groovy");
-        final Observable<String> observable = Observable.from(list);
+        final Observable<String> observable = Observable.fromIterable(list);
 
         observable.subscribe(
                 message -> LOGGER.debug("Item: {}", message),
